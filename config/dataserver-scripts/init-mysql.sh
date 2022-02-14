@@ -29,7 +29,7 @@ echo "INSERT INTO shards VALUES (2, 1, 'zotero_shard_2', 'up', '1');" | $MYSQL z
 # Create first group & user
 echo "INSERT INTO libraries VALUES (1, 'user', CURRENT_TIMESTAMP, 0, 1)" | $MYSQL zotero_master
 echo "INSERT INTO libraries VALUES (2, 'group', CURRENT_TIMESTAMP, 0, 2)" | $MYSQL zotero_master
-echo "INSERT INTO users VALUES (1, 1, 'admin', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)" | $MYSQL zotero_master
+echo "INSERT INTO users VALUES (1, 1, 'admin')" | $MYSQL zotero_master
 echo "INSERT INTO groups VALUES (1, 2, 'Shared', 'shared', 'Private', 'members', 'all', 'members', '', '', 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1)" | $MYSQL zotero_master
 echo "INSERT INTO groupUsers VALUES (1, 1, 'owner', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)" | $MYSQL zotero_master
 
@@ -54,3 +54,6 @@ echo "INSERT INTO shardLibraries VALUES (2, 'group', CURRENT_TIMESTAMP, 0)" | $M
 # Load in schema on id servers
 $MYSQL zotero_ids < ids.sql
 
+# Fix table structure due to new version
+echo "ALTER TABLE libraries ADD hasData TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER version , ADD INDEX (hasData)" | $MYSQL zotero_master
+echo "UPDATE libraries SET hasData=1 WHERE version > 0 OR lastUpdated != '0000-00-00 00:00:00'" | $MYSQL zotero_master

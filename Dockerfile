@@ -1,9 +1,9 @@
 # Use the official Docker Hub Ubuntu 18.04 base image
 FROM ubuntu:18.04
 
-RUN sed -i -e 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/' /etc/apt/sources.list
-RUN sed -i -e 's/deb http:\/\/security/#deb http:\/\/security/' /etc/apt/sources.list
-RUN sed -i -e 's/deb https:\/\/security/#deb https:\/\/security/' /etc/apt/sources.list
+#RUN sed -i -e 's/archive.ubuntu.com/mirrors.tuna.tsinghua.edu.cn/' /etc/apt/sources.list
+#RUN sed -i -e 's/deb http:\/\/security/#deb http:\/\/security/' /etc/apt/sources.list
+#RUN sed -i -e 's/deb https:\/\/security/#deb https:\/\/security/' /etc/apt/sources.list
 
 # Update the base image
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y upgrade && apt-get -y dist-upgrade
@@ -82,7 +82,7 @@ ENTRYPOINT ["/entrypoint.sh"]
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install npm nodejs
 
 COPY ./src/server/dataserver/ /var/www/zotero/
-RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
+#RUN composer config -g repo.packagist composer https://mirrors.aliyun.com/composer/
 RUN cd /var/www/zotero && composer install
 
 COPY ./src/server/stream-server/ /var/www/stream-server/

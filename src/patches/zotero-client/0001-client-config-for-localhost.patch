@@ -1,22 +1,15 @@
-From 1a1a02368d0cb49429b941b616a261cbc667fcbf Mon Sep 17 00:00:00 2001
-From: Zhang Fuxin <fxzhang@ict.ac.cn>
-Date: Thu, 4 Mar 2021 22:54:46 +0800
-Subject: [PATCH] client config for localhost
-
----
- resource/config.js | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
-
 diff --git a/resource/config.js b/resource/config.js
-index ed0737ded..81223efe3 100644
+index 4a480e3a4..8f6ef99ed 100644
 --- a/resource/config.js
 +++ b/resource/config.js
-@@ -2,30 +2,30 @@ var ZOTERO_CONFIG = {
+@@ -2,32 +2,32 @@ var ZOTERO_CONFIG = {
  	GUID: 'zotero@chnm.gmu.edu',
  	ID: 'zotero', // used for db filename, etc.
  	CLIENT_NAME: 'Zotero',
 -	DOMAIN_NAME: 'zotero.org',
 +	DOMAIN_NAME: 'localhost',
+ 	PRODUCER: 'Digital Scholar',
+ 	PRODUCER_URL: 'https://digitalscholar.org',
  	REPOSITORY_URL: 'https://repo.zotero.org/repo/',
 -	BASE_URI: 'http://zotero.org/',
 -	WWW_BASE_URL: 'https://www.zotero.org/',
@@ -46,17 +39,23 @@ index ed0737ded..81223efe3 100644
 +	SUPPORT_URL: "http://localhost:8080/support/",
 +	TROUBLESHOOTING_URL: "http://localhost:8080/support/getting_help",
  	FEEDBACK_URL: "https://forums.zotero.org/",
--	CONNECTORS_URL: "https://www.zotero.org/download/connectors"
-+	CONNECTORS_URL: "http://localhost:8080/download/connectors"
+-	CONNECTORS_URL: "https://www.zotero.org/download/connectors",
+-	CHANGELOG_URL: "https://www.zotero.org/support/changelog",
+-	CREDITS_URL: 'https://www.zotero.org/support/credits_and_acknowledgments',
+-	LICENSING_URL: 'https://www.zotero.org/support/licensing',
+-	GET_INVOLVED_URL: 'https://www.zotero.org/getinvolved',
++	CONNECTORS_URL: "http://localhost:8080/download/connectors",
++	CHANGELOG_URL: "http://localhost:8080/support/changelog",
++	CREDITS_URL: 'http://localhost:8080/support/credits_and_acknowledgments',
++	LICENSING_URL: 'http://localhost:8080/support/licensing',
++	GET_INVOLVED_URL: 'http://localhost:8080/getinvolved',
+ 	DICTIONARIES_URL: 'https://download.zotero.org/dictionaries/',
  };
  
- if (typeof process === 'object' && process + '' === '[object process]'){
+@@ -35,4 +35,4 @@ if (typeof process === 'object' && process + '' === '[object process]'){
  	module.exports = ZOTERO_CONFIG;
  } else {
  	var EXPORTED_SYMBOLS = ["ZOTERO_CONFIG"];
 -}
 \ No newline at end of file
 +}
--- 
-2.25.1
-

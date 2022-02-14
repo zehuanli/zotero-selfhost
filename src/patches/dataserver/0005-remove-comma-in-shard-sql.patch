@@ -1,0 +1,13 @@
+diff --git a/misc/shard.sql b/misc/shard.sql
+index f935be5..1dc3e3e 100644
+--- a/misc/shard.sql
++++ b/misc/shard.sql
+@@ -170,7 +170,7 @@ CREATE TABLE `itemFulltext` (
+   `version` int(10) unsigned NOT NULL DEFAULT '0',
+   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY (`itemID`),
+-  KEY `libraryVersion` (`libraryID`,`version`),
++  KEY `libraryVersion` (`libraryID`,`version`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+ 
+ 
