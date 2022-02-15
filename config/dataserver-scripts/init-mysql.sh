@@ -2,9 +2,9 @@
 
 MYSQL="mysql -h $DB_HOST -P 3306 -u $DB_USER -p$DB_PASS"
 
-echo "SET @@global.innodb_large_prefix = 1;" | $MYSQL
+#echo "SET @@global.innodb_large_prefix = 1;" | $MYSQL
 #echo "SET GLOBAL sql_mode='' " | $MYSQL
-echo "set global sql_mode = '' " | $MYSQL
+#echo "set global sql_mode = '' " | $MYSQL
 echo "DROP DATABASE IF EXISTS zotero_master" | $MYSQL
 echo "DROP DATABASE IF EXISTS zotero_shard_1" | $MYSQL
 echo "DROP DATABASE IF EXISTS zotero_shard_2" | $MYSQL
