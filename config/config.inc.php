@@ -18,13 +18,13 @@ class Z_CONFIG {
 	public static $API_SUPER_USERNAME = 'admin';
 	public static $API_SUPER_PASSWORD = 'admin';
 	
-	public static $AWS_REGION = 'us-east-1';
-	public static $AWS_ACCESS_KEY = 'zotero'; // leave credentials empty to use IAM role
-	public static $AWS_SECRET_KEY = 'zoterodocker';
-	public static $S3_BUCKET = 'zotero';
-    public static $S3_ENDPOINT = 'localhost:8082';
-	public static $S3_BUCKET_CACHE = '';
-	public static $S3_BUCKET_FULLTEXT = 'zotero-fulltext';
+	public static $AWS_REGION = getenv('AWS_REGION');
+	public static $AWS_ACCESS_KEY = getenv('AWS_ACCESS_KEY');
+	public static $AWS_SECRET_KEY = getenv('AWS_SECRET_KEY');
+	public static $S3_BUCKET = getenv('S3_BUCKET');
+	public static $S3_ENDPOINT = getenv('S3_ENDPOINT');
+	public static $S3_BUCKET_CACHE = getenv('S3_BUCKET_CACHE');
+	public static $S3_BUCKET_FULLTEXT = getenv('S3_BUCKET_FULLTEXT');
 	public static $SNS_ALERT_TOPIC = '';
 
 	public static $REDIS_HOSTS = [

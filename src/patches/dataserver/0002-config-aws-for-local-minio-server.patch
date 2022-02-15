@@ -16,8 +16,8 @@ index 11ce756..0faa350 100644
  	'version' => 'latest',
  	'signature' => 'v4',
 +	'use_path_style_endpoint' => true,
-+	'endpoint' => 'http://' . Z_CONFIG::$S3_ENDPOINT,
-+        'scheme' => 'http',
++	'endpoint' => 'https://' . Z_CONFIG::$S3_ENDPOINT,
++       'scheme' => 'https',
  	'http' => [
  		'timeout' => 3
  	],

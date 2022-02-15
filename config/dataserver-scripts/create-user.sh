@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MYSQL="mysql -h mysql -P 3306 -u root -pzotero"
+MYSQL="mysql -h $DB_HOST -P 3306 -u $DB_USER -p$DB_PASS"
 
 echo "INSERT INTO libraries VALUES (${1}, 'user', CURRENT_TIMESTAMP, 0, 1)" | $MYSQL zotero_master
 echo "INSERT INTO users VALUES (${1}, ${1}, '${2}', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)" | $MYSQL zotero_master

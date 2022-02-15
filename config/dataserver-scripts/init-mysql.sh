@@ -1,6 +1,6 @@
 #!/bin/sh
 
-MYSQL="mysql -h mysql -P 3306 -u root -pzotero"
+MYSQL="mysql -h $DB_HOST -P 3306 -u $DB_USER -p$DB_PASS"
 
 echo "SET @@global.innodb_large_prefix = 1;" | $MYSQL
 #echo "SET GLOBAL sql_mode='' " | $MYSQL
