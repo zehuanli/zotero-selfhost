@@ -181,6 +181,12 @@ For internet usage, you can setup a website with ssl enabled, and use reverse
 proxy to get it back to internal servers. Of course, you can enable SSL and deploy
 it directly in external servers, but I have not tried that.
 
+### Requirement for MySQL server
+- Remove the following items from `sql_mode`:
+  1. `ONLY_FULL_GROUP_BY`
+  2. `NO_ZERO_DATE`
+  3. `NO_ZERO_IN_DATE`
+
 ## server management
 
 There are no user management interface for now. You can use the script
