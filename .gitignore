@@ -1,1 +1,2 @@
 secret.env
+config/mysql_ca.pem

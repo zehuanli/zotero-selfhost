@@ -18,13 +18,13 @@ class Z_CONFIG {
 	public static $API_SUPER_USERNAME = 'admin';
 	public static $API_SUPER_PASSWORD = 'admin';
 	
-	public static $AWS_REGION = getenv('AWS_REGION');
-	public static $AWS_ACCESS_KEY = getenv('AWS_ACCESS_KEY');
-	public static $AWS_SECRET_KEY = getenv('AWS_SECRET_KEY');
-	public static $S3_BUCKET = getenv('S3_BUCKET');
-	public static $S3_ENDPOINT = getenv('S3_ENDPOINT');
-	public static $S3_BUCKET_CACHE = getenv('S3_BUCKET_CACHE');
-	public static $S3_BUCKET_FULLTEXT = getenv('S3_BUCKET_FULLTEXT');
+	public static $AWS_REGION;
+	public static $AWS_ACCESS_KEY;
+	public static $AWS_SECRET_KEY;
+	public static $S3_BUCKET;
+	public static $S3_ENDPOINT;
+	public static $S3_BUCKET_CACHE;
+	public static $S3_BUCKET_FULLTEXT;
 	public static $SNS_ALERT_TOPIC = '';
 
 	public static $REDIS_HOSTS = [
@@ -88,5 +88,16 @@ class Z_CONFIG {
 	public static $CACHE_VERSION_ITEM_DATA = 1;
 	public static $CACHE_VERSION_RESPONSE_JSON_COLLECTION = 1;
 	public static $CACHE_VERSION_RESPONSE_JSON_ITEM = 1;
+
+	static function init() {
+		self::$AWS_REGION = getenv('AWS_REGION');
+		self::$AWS_ACCESS_KEY = getenv('AWS_ACCESS_KEY');
+		self::$AWS_SECRET_KEY = getenv('AWS_SECRET_KEY');
+		self::$S3_BUCKET = getenv('S3_BUCKET');
+		self::$S3_ENDPOINT = getenv('S3_ENDPOINT');
+		self::$S3_BUCKET_CACHE = getenv('S3_BUCKET_CACHE');
+		self::$S3_BUCKET_FULLTEXT = getenv('S3_BUCKET_FULLTEXT');
+	}
 }
+Z_CONFIG::init();
 ?>
