@@ -9,10 +9,6 @@ services:
      image: redis:5.0
   db-zotero-memcached:
      image: memcached:1.5
-  db-zotero-localstack:
-    image: atlassianlabs/localstack
-    environment:
-      - SERVICES=sns,sqs,apigateway
   app-zotero:
     image: app-zotero
     build:
@@ -42,5 +38,4 @@ services:
       - db-zotero-elasticsearch:elasticsearch
       - db-zotero-redis:redis
       - db-zotero-memcached:memcached
-      - db-zotero-localstack:localstack
     restart: always
