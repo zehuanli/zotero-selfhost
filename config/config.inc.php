@@ -45,7 +45,7 @@ class Z_CONFIG {
 
 	public static $REDIS_PREFIX = '';
 	
-	public static $MEMCACHED_ENABLED = true;
+	public static $MEMCACHED_ENABLED = false;
 	public static $MEMCACHED_SERVERS = array(
 		'memcached:11211:1'
 	);
@@ -58,7 +58,8 @@ class Z_CONFIG {
 		"citeserver1.localdomain:8080", "citeserver2.localdomain:8080"
 	);
 	
-	public static $SEARCH_HOSTS = ['elasticsearch'];
+	public static $ELASTICSEARCH_ENABLED = false;
+	public static $SEARCH_HOSTS = [''];
 	
 	public static $GLOBAL_ITEMS_URL = '';
 	

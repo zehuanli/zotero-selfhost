@@ -7,8 +7,8 @@ services:
 #     - xpack.security.enabled=false
   db-zotero-redis:
      image: redis:5.0
-  db-zotero-memcached:
-     image: memcached:1.5
+#  db-zotero-memcached:
+#     image: memcached:1.5
   app-zotero:
     image: app-zotero
     build:
@@ -37,9 +37,9 @@ services:
     depends_on:
 #      - db-zotero-elasticsearch
       - db-zotero-redis
-      - db-zotero-memcached 
+#      - db-zotero-memcached
     links:
 #      - db-zotero-elasticsearch:elasticsearch
       - db-zotero-redis:redis
-      - db-zotero-memcached:memcached
+#      - db-zotero-memcached:memcached
     restart: always
