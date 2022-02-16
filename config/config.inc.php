@@ -81,7 +81,7 @@ class Z_CONFIG {
 	// Set some things manually for running via command line
 	public static $CLI_PHP_PATH = '/usr/bin/php';
 	
-	public static $ERROR_PATH = '/var/www/zotero/errors/';
+	public static $ERROR_PATH = '/var/log/zotero/';
 	
 	public static $CACHE_VERSION_ATOM_ENTRY = 1;
 	public static $CACHE_VERSION_BIB = 1;
@@ -91,8 +91,8 @@ class Z_CONFIG {
 
 	static function init() {
 		self::$AWS_REGION = getenv('AWS_REGION');
-		self::$AWS_ACCESS_KEY = getenv('AWS_ACCESS_KEY');
-		self::$AWS_SECRET_KEY = getenv('AWS_SECRET_KEY');
+		self::$AWS_ACCESS_KEY = getenv('AWS_ACCESS_KEY_ID');
+		self::$AWS_SECRET_KEY = getenv('AWS_SECRET_ACCESS_KEY');
 		self::$S3_BUCKET = getenv('S3_BUCKET');
 		self::$S3_ENDPOINT = getenv('S3_ENDPOINT');
 		self::$S3_BUCKET_CACHE = getenv('S3_BUCKET_CACHE');
