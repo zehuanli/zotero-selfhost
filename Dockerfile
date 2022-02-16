@@ -41,9 +41,7 @@ RUN phpenmod msgpack && phpenmod memcached
 # HTTP_Request2
 # RUN DEBIAN_FRONTEND=noninteractive pear install HTTP_Request2
 
-# Setup awscli
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install python python-pip git wget rinetd awscli
-#RUN DEBIAN_FRONTEND=noninteractive pip install awscli
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install python python-pip git wget
 
 # Setup Apache2
 RUN a2enmod headers
@@ -57,9 +55,6 @@ RUN a2ensite zotero
 # Override gzip configuration
 COPY config/gzip.conf /etc/apache2/conf-available/
 RUN a2enconf gzip
-
-# AWS local credentials
-RUN mkdir ~/.aws  && bash -c 'echo -e "[default]\nregion = us-east-1" > ~/.aws/config' && bash -c 'echo -e "[default]\naws_access_key_id = zotero\naws_secret_access_key = zoterodocker" > ~/.aws/credentials'
 
 # Chown log directory
 RUN chown 33:33 /var/log/apache2

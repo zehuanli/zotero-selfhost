@@ -9,3 +9,5 @@ echo "INSERT INTO users VALUES (${1}, '${2}', MD5('${3}'))" | $MYSQL zotero_www
 echo "INSERT INTO users_email (userID, email) VALUES (${1}, '${4}')" | $MYSQL zotero_www
 echo "INSERT INTO shardLibraries VALUES (${1}, 'user', 0, 0)" | $MYSQL zotero_shard_1
 
+# Set user's personal quota to a large value
+echo "INSERT INTO storageAccounts VALUES (${1}, 10000000, '2038-01-01 00:00:00')" | $MYSQL zotero_master;
