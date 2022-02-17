@@ -8,7 +8,7 @@ class Z_CONFIG {
 	public static $TESTING_SITE = false;
 	public static $DEV_SITE = false;
 	
-	public static $DEBUG_LOG = true;
+	public static $DEBUG_LOG = false;
 	
 	public static $BASE_URI = 'http://localhost:8080';
 	public static $API_BASE_URI = 'http://localhost:8080/';
@@ -92,11 +92,7 @@ class Z_CONFIG {
 
 	static function init() {
 		self::$AWS_REGION = getenv('AWS_REGION');
-		self::$AWS_ACCESS_KEY = getenv('AWS_ACCESS_KEY_ID');
-		self::$AWS_SECRET_KEY = getenv('AWS_SECRET_ACCESS_KEY');
 		self::$S3_BUCKET = getenv('S3_BUCKET');
-		self::$S3_ENDPOINT = getenv('S3_ENDPOINT');
-		self::$S3_BUCKET_CACHE = getenv('S3_BUCKET_CACHE');
 		self::$S3_BUCKET_FULLTEXT = getenv('S3_BUCKET_FULLTEXT');
 	}
 }

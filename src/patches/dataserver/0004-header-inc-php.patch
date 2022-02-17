@@ -1,0 +1,34 @@
+diff --git a/include/header.inc.php b/include/header.inc.php
+index 11ce756..609a8f8 100644
+--- a/include/header.inc.php
++++ b/include/header.inc.php
+@@ -214,6 +214,7 @@ $awsConfig = [
+ 	],
+ 	'retries' => 2
+ ];
++/* AWS credentials will be loaded from environment variables automatically
+ // IAM role authentication
+ if (empty(Z_CONFIG::$AWS_ACCESS_KEY)) {
+ 	// If APC cache is available, use that to cache temporary credentials
+@@ -233,14 +234,17 @@ else {
+ 		'secret' => Z_CONFIG::$AWS_SECRET_KEY
+ 	];
+ }
++ */
+ Z_Core::$AWS = new Aws\Sdk($awsConfig);
+ unset($awsConfig);
+ 
+ // Elasticsearch
+-$esConfig = [
+-	'hosts' => Z_CONFIG::$SEARCH_HOSTS
+-];
+-Z_Core::$ES = \Elasticsearch\ClientBuilder::fromConfig($esConfig, true);
++if (Z_CONFIG::$ELASTICSEARCH_ENABLED) {
++	$esConfig = [
++		'hosts' => Z_CONFIG::$SEARCH_HOSTS
++	];
++	Z_Core::$ES = \Elasticsearch\ClientBuilder::fromConfig($esConfig, true);
++}
+ 
+ require('interfaces/IAuthenticationPlugin.inc.php');
+ 

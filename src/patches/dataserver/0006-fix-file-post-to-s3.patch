@@ -1,5 +1,5 @@
 diff --git a/model/Storage.inc.php b/model/Storage.inc.php
-index 581aa0a..497eb11 100644
+index 581aa0a..a51bd9a 100644
 --- a/model/Storage.inc.php
 +++ b/model/Storage.inc.php
 @@ -689,7 +689,7 @@ class Zotero_Storage {
@@ -11,3 +11,13 @@ index 581aa0a..497eb11 100644
  		
  		// Suffix
  		$suffix = "\r\n--$boundary--";
+@@ -1040,9 +1040,5 @@ class Zotero_Storage {
+ 		return $usage;
+ 	}
+ 	
+-	
+-	private static function getHash($stringToSign) {
+-		return base64_encode(hash_hmac('sha1', $stringToSign, Z_CONFIG::$AWS_SECRET_KEY, true));
+-	}
+ }
+ ?>
