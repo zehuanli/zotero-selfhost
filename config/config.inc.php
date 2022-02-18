@@ -22,7 +22,6 @@ class Z_CONFIG {
 	public static $AWS_ACCESS_KEY;
 	public static $AWS_SECRET_KEY;
 	public static $S3_BUCKET;
-	public static $S3_ENDPOINT;
 	public static $S3_BUCKET_CACHE;
 	public static $S3_BUCKET_FULLTEXT;
 	public static $SQS_QUEUE_URL;

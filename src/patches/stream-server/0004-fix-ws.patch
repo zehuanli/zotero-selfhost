@@ -1,0 +1,45 @@
+diff --git a/server.js b/server.js
+index 87f1447..dce5f2a 100644
+--- a/server.js
++++ b/server.js
+@@ -138,9 +138,8 @@ module.exports = function (onInit) {
+ 	}
+ 	
+ 	
+-	function handleWebSocketConnection(ws) {
++	function handleWebSocketConnection(ws, req) {
+ 		log.info("Received WebSocket request", ws);
+-		var req = ws.upgradeReq;
+ 		
+ 		Promise.coroutine(function* () {
+ 			var urlParts = url.parse(req.url, true);
+@@ -199,7 +198,7 @@ module.exports = function (onInit) {
+ 			connections.sendEvent(connection, 'connected', data);
+ 			
+ 			ws.on('message', function (message) {
+-				handleClientMessage(ws, message);
++				handleClientMessage(ws, message.toString());
+ 			});
+ 			
+ 			ws.on('close', function () {
+@@ -630,9 +629,9 @@ module.exports = function (onInit) {
+ 			}
+ 		});
+ 		// The remote IP address is only available at connection time in the upgrade request
+-		wss.on('connection', function (ws) {
++		wss.on('connection', function (ws, req) {
+ 			var remoteAddress = ws._socket.remoteAddress;
+-			var xForwardedFor = ws.upgradeReq.headers['x-forwarded-for'];
++			var xForwardedFor = req.headers['x-forwarded-for'];
+ 			if (remoteAddress && xForwardedFor) {
+ 				let proxies = config.get('trustedProxies');
+ 				if (Array.isArray(proxies)
+@@ -641,7 +640,7 @@ module.exports = function (onInit) {
+ 				}
+ 			}
+ 			ws.remoteAddress = remoteAddress;
+-			handleWebSocketConnection(ws);
++			handleWebSocketConnection(ws, req);
+ 		});
+ 		
+ 		yield Promise.promisify(server.listen, server)(config.get('httpPort'), '0.0.0.0');

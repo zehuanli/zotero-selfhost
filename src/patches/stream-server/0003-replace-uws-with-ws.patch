@@ -1,0 +1,39 @@
+diff --git a/connections.js b/connections.js
+index f49b2af..e1fe9e2 100644
+--- a/connections.js
++++ b/connections.js
+@@ -24,7 +24,7 @@
+ 
+ var config = require('config');
+ var randomstring = require('randomstring');
+-var WebSocket = require('uws');
++var WebSocket = require('ws');
+ var utils = require('./utils');
+ var log = require('./log');
+ var statsD = require('./statsd');
+diff --git a/package.json b/package.json
+index ff893a5..d81accd 100644
+--- a/package.json
++++ b/package.json
+@@ -22,7 +22,7 @@
+ 		"randomstring": "^1.0.3",
+ 		"request": "^2.88.0",
+ 		"strftime": "^0.10.0",
+-		"uws": "10.148.1",
++		"ws": "8.5.0",
+ 		"sqs-consumer": "5.6.0",
+ 		"aws-sdk": "2.1076.0",
+ 		"https": "1.0.0"
+diff --git a/server.js b/server.js
+index 142e789..87f1447 100644
+--- a/server.js
++++ b/server.js
+@@ -616,7 +616,7 @@ module.exports = function (onInit) {
+ 		});
+ 		
+ 		// Give server WebSocket powers
+-		var WebSocketServer = require('uws').Server;
++		var WebSocketServer = require('ws').WebSocketServer;
+ 		wss = new WebSocketServer({
+ 			server: server,
+ 			verifyClient: function (info, cb) {
