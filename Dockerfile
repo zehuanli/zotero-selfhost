@@ -8,7 +8,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get -y upgrade && apt-g
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install software-properties-common apt-utils
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install pkg-config re2c
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install apache2 libapache2-mod-php7.2 sudo wget mysql-client curl unzip python python-pip git
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install php7.2-cli php7.2-xml php7.2-mysql php7.2-pgsql php7.2-json php7.2-curl php7.2-mbstring php7.2-intl php7.2-redis php7.2-dev composer vim php-http-request2 php-memcached php-igbinary php-msgpack
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install php7.2-cli php7.2-xml php7.2-mysql php7.2-pgsql php7.2-json php7.2-curl php7.2-mbstring php7.2-intl php7.2-dev composer vim php-http-request2 php-igbinary php-msgpack
 RUN DEBIAN_FRONTEND=noninteractive apt-get -y install npm nodejs
 
 RUN sed -i 's/memory_limit = 128M/memory_limit = 1G/g' /etc/php/7.2/apache2/php.ini
@@ -20,7 +20,7 @@ RUN sed -i 's/error_reporting = E_ALL \& ~E_DEPRECATED \& ~E_STRICT/error_report
 
 # Setup PHP mods
 RUN phpenmod igbinary
-RUN phpenmod msgpack && phpenmod memcached
+RUN phpenmod msgpack
 
 # Setup Apache2
 RUN a2enmod headers

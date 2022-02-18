@@ -6,6 +6,7 @@ BASEDIR=$(dirname "$SCRIPT")/..
 cd $BASEDIR
 
 patch_dataserver=1
+patch_stream_server=1
 patch_zotero_client=1
 patch_web_library=1
 
@@ -16,6 +17,15 @@ if [ $patch_dataserver == 1 ] ; then
     patch -p 1 < $p
   done
   cd ./include && tar -xzvf ${BASEDIR}/src/patches/dataserver/Zend.tar.gz
+  cd $BASEDIR
+fi
+
+if [ $patch_stream_server == 1 ] ; then
+  cd src/server/stream-server
+  for p in ${BASEDIR}/src/patches/stream-server/*.patch; do
+    echo $p
+    patch -p 1 < $p
+  done
   cd $BASEDIR
 fi
 

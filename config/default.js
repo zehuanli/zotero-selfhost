@@ -13,10 +13,7 @@ var config = {
 	keepaliveInterval: 25,
 	retryTime: 10,
 	shutdownDelay: 100,
-	redis: {
-		host: 'redis',
-		prefix: ''
-	},
+	queueUrl: process.env.SQS_QUEUE_URL,
 	apiURL: 'http://localhost/',
 	apiVersion: 3,
 	apiRequestHeaders: {},

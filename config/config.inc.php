@@ -25,26 +25,10 @@ class Z_CONFIG {
 	public static $S3_ENDPOINT;
 	public static $S3_BUCKET_CACHE;
 	public static $S3_BUCKET_FULLTEXT;
+	public static $SQS_QUEUE_URL;
+
 	public static $SNS_ALERT_TOPIC = '';
 
-	public static $REDIS_HOSTS = [
-		'default' => [
-			'host' => 'redis'
-		],
-		'request-limiter' => [
-			'host' => 'redis'
-		],
-		'notifications' => [
-			'host' => 'redis'
-		],
-		'fulltext-migration' => [
-			'host' => 'redis',
-			'cluster' => false
-		]
-	];
-
-	public static $REDIS_PREFIX = '';
-	
 	public static $MEMCACHED_ENABLED = false;
 	public static $MEMCACHED_SERVERS = array(
 		'memcached:11211:1'
@@ -94,6 +78,7 @@ class Z_CONFIG {
 		self::$AWS_REGION = getenv('AWS_REGION');
 		self::$S3_BUCKET = getenv('S3_BUCKET');
 		self::$S3_BUCKET_FULLTEXT = getenv('S3_BUCKET_FULLTEXT');
+		self::$SQS_QUEUE_URL = getenv('SQS_QUEUE_URL');
 	}
 }
 Z_CONFIG::init();

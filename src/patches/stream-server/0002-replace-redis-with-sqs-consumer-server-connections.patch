@@ -1,0 +1,152 @@
+diff --git a/connections.js b/connections.js
+index 8b17310..f49b2af 100644
+--- a/connections.js
++++ b/connections.js
+@@ -28,7 +28,6 @@ var WebSocket = require('uws');
+ var utils = require('./utils');
+ var log = require('./log');
+ var statsD = require('./statsd');
+-var redis = require('./redis');
+ 
+ module.exports = function () {
+ 	//
+@@ -215,19 +214,15 @@ module.exports = function () {
+ 			if (!topicSubscriptions[topic]) {
+ 				topicSubscriptions[topic] = [];
+ 			}
+-			// Subscribe to redis channel if this topic is new
+-			if (topicSubscriptions[topic].length == 0) {
+-				redis.subscribe((config.get('redis').prefix || '') + topic);
+-			}
++
+ 			topicSubscriptions[topic].push(subscription);
+ 			
+ 			if (!keySubscriptions[apiKey]) {
+ 				keySubscriptions[apiKey] = [];
+ 			}
+-			// Subscribe to redis channel if this apiKey is new
++			// Subscribe if this apiKey is new
+ 			if (keySubscriptions[apiKey].length == 0) {
+ 				this.addKeyMapping(apiKeyID, apiKey);
+-				redis.subscribe('api-key:' + (config.get('redis').prefix || '') + apiKeyID);
+ 			}
+ 			keySubscriptions[apiKey].push(subscription);
+ 			
+@@ -260,7 +255,6 @@ module.exports = function () {
+ 					topicSubscriptions[topic].splice(i, 1);
+ 					if (!topicSubscriptions[topic].length) {
+ 						delete topicSubscriptions[topic];
+-						redis.unsubscribe((config.get('redis').prefix || '') + topic);
+ 					}
+ 					break;
+ 				}
+@@ -273,7 +267,6 @@ module.exports = function () {
+ 					if (!keySubscriptions[apiKey].length) {
+ 						delete keySubscriptions[apiKey];
+ 						this.removeKeyMapping(apiKeyID);
+-						redis.unsubscribe((config.get('redis').prefix || '') + apiKeyID);
+ 					}
+ 					break;
+ 				}
+diff --git a/server.js b/server.js
+index 70f772e..142e789 100644
+--- a/server.js
++++ b/server.js
+@@ -34,13 +34,15 @@ var domain = require('domain');
+ var path = require('path');
+ var Netmask = require('netmask').Netmask;
+ var util = require('util');
++var _https = require('https');
++var aws = require('aws-sdk');
++var sqs_consumer = require('sqs-consumer').Consumer;
+ 
+ var utils = require('./utils');
+ var WSError = utils.WSError;
+ var log = require('./log');
+ var connections = require('./connections');
+ var zoteroAPI = require('./zotero_api');
+-var redis = require('./redis');
+ 
+ module.exports = function (onInit) {
+ 	
+@@ -553,46 +555,28 @@ module.exports = function (onInit) {
+ 			});
+ 		}
+ 		
+-		// 'ready' event is emitted every time when Redis connects.
+-		// Each time we have to resubscribe to all topics and keys.
+-		redis.on('ready', function () {
+-			let channels = connections.getSubscriptions();
+-			if (!channels.length) return;
+-			
+-			// After reconnect, we resubscribe Redis connection to all channels (keys + topics),
+-			// but if the channel count is too big, the connection will be blocked
+-			// until the re-subscription process finishes and the messages coming from dataserver
+-			// will be buffered on the Redis side. If the buffer size will be exceeded, Redis kills
+-			// the connection, then stream-server reconnects and this cycle repeats indefinitely.
+-			// If this problem is encountered, increase
+-			// "client-output-buffer-limit pubsub 32mb 8mb 60"
+-			// memory limits in /etc/redis/redis.conf.
+-			// stream-server needs only one connection, therefore
+-			// 'client-output-buffer-limit' can be increased to a high number.
+-			// This problem is influenced by the dataserver generated
+-			// messages per second rate, and depends on how fast the huge subscription command
+-			// is sent to redis server and processed.
+-			// Another solution could be to subscribe in smaller chunks,
+-			// but this would create concurrency conditions with
+-			// 'unsubscribe' command used in connections.js.
+-			
+-			let prefix = config.get('redis').prefix;
+-			if (prefix) {
+-				for (let i = 0; i < channels.length; i++) {
+-					channels[i] = prefix + channels[i];
++		var sqs = sqs_consumer.create({
++			queueUrl: config.get('queueUrl'),
++			handleMessage: async (message) => {
++				handleNotification(message.Body);
++			},
++			sqs: new aws.SQS({
++				httpOptions: {
++					agent: new _https.Agent({
++						keepAlive: true
++					})
+ 				}
+-			}
+-			
+-			log.info('Resubscribing to ' + channels.length + ' channel(s)');
+-			// There is a node_redis bug which is triggered when
+-			// the previously documented problem happens.
+-			// TODO: Keep track the state of this bug: https://github.com/NodeRedis/node_redis/issues/1230
+-			redis.subscribe(channels, function (err) {
+-				if (err) return log.error(err);
+-				log.info('Resubscribing done');
+-			});
++			})
+ 		});
+-		
++
++		sqs.on('error', (err) => {
++			log.error(err.message);
++		});
++
++		sqs.on('processing_error', (err) => {
++			log.error(err.message);
++		});
++
+ 		//
+ 		// Create the HTTP(S) server
+ 		//
+@@ -682,11 +666,8 @@ module.exports = function (onInit) {
+ 				onInit();
+ 			}
+ 		});
+-		
+-		// Listen for Redis messages
+-		redis.on('message', function (channel, message) {
+-			handleNotification(message);
+-		});
++
++		sqs.start();
+ 	})()
+ 	.catch(function (e) {
+ 		log.error("Caught error");
