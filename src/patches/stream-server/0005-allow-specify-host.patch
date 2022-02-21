@@ -1,0 +1,13 @@
+diff --git a/server.js b/server.js
+index dce5f2a..8f6941e 100644
+--- a/server.js
++++ b/server.js
+@@ -643,7 +643,7 @@ module.exports = function (onInit) {
+ 			handleWebSocketConnection(ws, req);
+ 		});
+ 		
+-		yield Promise.promisify(server.listen, server)(config.get('httpPort'), '0.0.0.0');
++		yield Promise.promisify(server.listen, server)(config.get('httpPort'), config.get('httpHost'));
+ 		
+ 		log.info("Listening on port " + config.get('httpPort'));
+ 		
