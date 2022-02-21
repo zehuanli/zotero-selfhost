@@ -1,5 +1,10 @@
 #!/bin/sh
 
+if [ -z "$DB_HOST" ] || [ -z "$DB_USER" ] || [ -z "$DB_PASS" ] || [ -z "$ADMIN_HASH" ]; then
+	echo "Environment variables not set"
+	exit 1
+fi
+
 MYSQL="mysql -h $DB_HOST -P 3306 -u $DB_USER -p$DB_PASS"
 
 #echo "SET @@global.innodb_large_prefix = 1;" | $MYSQL
@@ -36,7 +41,7 @@ echo "INSERT INTO groupUsers VALUES (1, 1, 'owner', CURRENT_TIMESTAMP, CURRENT_T
 # Load in www schema
 $MYSQL zotero_www < www.sql
 
-echo "INSERT INTO users VALUES (1, 'admin', MD5('admin'), 'normal')" | $MYSQL zotero_www
+echo "INSERT INTO users VALUES (1, 'admin', '$ADMIN_HASH', 'normal')" | $MYSQL zotero_www
 echo "INSERT INTO users_email (userID, email) VALUES (1, 'admin@zotero.org')" | $MYSQL zotero_www
 echo "INSERT INTO storage_institutions (institutionID, domain, storageQuota) VALUES (1, 'zotero.org', 10000)" | $MYSQL zotero_www
 echo "INSERT INTO storage_institution_email (institutionID, email) VALUES (1, 'contact@zotero.org')" | $MYSQL zotero_www

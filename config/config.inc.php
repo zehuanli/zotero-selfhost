@@ -14,7 +14,6 @@ class Z_CONFIG {
 	public static $API_BASE_URI = 'http://localhost:8080/';
 	public static $WWW_BASE_URI = 'http://localhost:8080/';
 	
-	public static $AUTH_SALT = 'dhAyudsHU176dsqhUY';
 	public static $API_SUPER_USERNAME = 'admin';
 	public static $API_SUPER_PASSWORD = 'admin';
 	

@@ -1,0 +1,30 @@
+diff --git a/model/auth/Password.inc.php b/model/auth/Password.inc.php
+index 48f09bc..af6209e 100644
+--- a/model/auth/Password.inc.php
++++ b/model/auth/Password.inc.php
+@@ -26,8 +26,6 @@
+ 
+ class Zotero_AuthenticationPlugin_Password implements Zotero_AuthenticationPlugin {
+ 	public static function authenticate($data) {
+-		$salt = Z_CONFIG::$AUTH_SALT;
+-		
+ 		// TODO: config
+ 		$dev = Z_ENV_TESTING_SITE ? "_test" : "";
+ 		$databaseName = "zotero_www{$dev}";
+@@ -87,16 +85,6 @@ class Zotero_AuthenticationPlugin_Password implements Zotero_AuthenticationPlugi
+ 			// Try bcrypt
+ 			$found = password_verify($password, $row['hash']);
+ 			
+-			// Try salted SHA1
+-			if (!$found) {
+-				$found = sha1($salt . $password) == $row['hash'];
+-			}
+-			
+-			// Try MD5
+-			if (!$found) {
+-				$found = md5($password) == $row['hash'];
+-			}
+-			
+ 			if ($found) {
+ 				$foundRow = $row;
+ 				break;
