@@ -1,8 +1,8 @@
 diff --git a/controllers/ApiController.php b/controllers/ApiController.php
-index 390e962..1913fa0 100644
+index 390e962..9383c10 100644
 --- a/controllers/ApiController.php
 +++ b/controllers/ApiController.php
-@@ -188,41 +188,24 @@ class ApiController extends Controller {
+@@ -188,42 +188,33 @@ class ApiController extends Controller {
  			Zotero_DB::profileStart();
  		}
  		
@@ -40,14 +40,24 @@ index 390e962..1913fa0 100644
 -				$this->userID = $userID;
 -				$this->grantUserPermissions($userID);
 -			}
-+		// Login with creds in input body (sent by clients)
-+		if (isset($this->body)) {
-+			$json = json_decode($this->body, true);
- 		}
-+		if (isset($json) && isset($json['username']) && isset($json['password'])) {
-+                        $username = $json['username'];
-+                        $password = $json['password'];
+-		}
+-		
++		// Try to get creds in JSON input body (sent by clients)
++                if (isset($this->body)) {
++                        $json = json_decode($this->body, true);
++                        if (isset($json) && isset($json['username']) && isset($json['password'])) {
++                                $username = $json['username'];
++                                $password = $json['password'];
++                        }
++                }
 +
++                // Try to get creds from basic authentication header
++                if (! isset($username) && isset($_SERVER['PHP_AUTH_USER']) && isset($_SERVER['PHP_AUTH_PW'])) {
++                        $username = $_SERVER['PHP_AUTH_USER'];
++                        $password = $_SERVER['PHP_AUTH_PW'];
++                }
++
++                if (isset($username) && isset($password)) {
 +                        $userID = Zotero_Users::authenticate(
 +                                'password',
 +                                array('username' => $username, 'password' => $password)
@@ -58,10 +68,11 @@ index 390e962..1913fa0 100644
 +                        $this->userID = $userID;
 +                        $this->grantUserPermissions($userID);
 +                }
- 		
++
  		if (!isset($this->userID)) {
  			$key = false;
-@@ -279,19 +262,6 @@ class ApiController extends Controller {
+ 			// Allow Zotero-API-Key header
+@@ -279,19 +270,6 @@ class ApiController extends Controller {
  					}
  				}
  			}
@@ -81,7 +92,7 @@ index 390e962..1913fa0 100644
  			// No credentials provided
  			else {
  				if (!empty($_GET['auth']) || !empty($extra['auth'])) {
-@@ -305,9 +275,8 @@ class ApiController extends Controller {
+@@ -305,9 +283,8 @@ class ApiController extends Controller {
  					$this->e403('An API key is required for write requests.');
  				}
  				
@@ -89,7 +100,7 @@ index 390e962..1913fa0 100644
 -				$this->permissions = new Zotero_Permissions;
 -				$this->permissions->setAnonymous();
 +				// Anonymous request (is not allowed)
-+				$this->e403('Anonymous login not allowed');
++				$this->e401();
  			}
  		}
  		
