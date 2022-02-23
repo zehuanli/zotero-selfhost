@@ -1,0 +1,29 @@
+diff --git a/misc/master.sql b/misc/master.sql
+index a46f31f..ccd63ed 100644
+--- a/misc/master.sql
++++ b/misc/master.sql
+@@ -166,7 +166,7 @@ CREATE TABLE `keyPermissions` (
+ 
+ CREATE TABLE `keys` (
+   `keyID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+-  `key` char(24) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
++  `key` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+   `userID` int(10) unsigned NOT NULL,
+   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+   `dateAdded` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+diff --git a/model/Keys.inc.php b/model/Keys.inc.php
+index 771dafd..606a367 100644
+--- a/model/Keys.inc.php
++++ b/model/Keys.inc.php
+@@ -94,9 +94,9 @@ class Zotero_Keys {
+ 	
+ 	
+ 	public static function generate() {
+-		$tries = 5;
++		$tries = 10;
+ 		while ($tries > 0) {
+-			$str = Zotero_Utilities::randomString(24, 'mixed');
++			$str = base64_encode(random_bytes(64));
+ 			$sql = "SELECT COUNT(*) FROM `keys` WHERE `key`=?";
+ 			if (Zotero_DB::valueQuery($sql, $str)) {
+ 				$tries--;
